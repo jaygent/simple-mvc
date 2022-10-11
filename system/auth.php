@@ -18,10 +18,7 @@ class Auth{
     }
 
     public static function user(){
-        if(self::is_user()){
-            $json=fopen(dirname(__FILE__, 2) . '/session.json','r+');
-            $contentjsom=stream_get_contents($json);
-        }
+
     }
 
     public function login(Request $request){
