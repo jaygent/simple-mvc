@@ -7,6 +7,6 @@ use app\Model\Post;
 class PostController extends Controller{
 
     public function index(){
-        echo 'index';
+  return $this->views->render('post.twig',['title'=>'index','text'=>'text']);
     }
 }

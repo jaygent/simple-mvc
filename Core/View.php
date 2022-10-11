@@ -1,44 +1,20 @@
 <?php
 namespace Core;
 
+use Twig\Environment;
+
 class View {
-    public $path;
-    public $layout = 'default';
+ protected Environment $twig;
 
-//    public function __construct($route) {
-//        $this->path = $route['controller'].'/'.$route['action'];
-//    }
+ public function __construct()
+ {
+     $loader = new \Twig\Loader\FilesystemLoader(dirname(__FILE__, 2).'/views');
+     $this->twig = new \Twig\Environment($loader, [
+         'cache' => dirname(__FILE__, 2).'/cache',
+     ]);
+ }
 
-    public function render($title, $vars = []) {
-        extract($vars);
-        $path = 'views/'.$this->path.'.php';
-        if (file_exists($path)) {
-            ob_start();
-            require $path;
-            $content = ob_get_clean();
-          //  require 'views/layouts/'.$this->layout.'.php';
-        }
-    }
-
-    public function redirect($url) {
-        header('location: /'.$url);
-        exit;
-    }
-
-    public static function errorCode($code) {
-        http_response_code($code);
-        $path = 'views/errors/'.$code.'.php';
-        if (file_exists($path)) {
-            require $path;
-        }
-        exit;
-    }
-
-    public function message($status, $message) {
-        exit(json_encode(['status' => $status, 'message' => $message]));
-    }
-
-    public function location($url) {
-        exit(json_encode(['url' => $url]));
-    }
+ public function render(string $templname,array $arg){
+     echo $this->twig->render($templname,$arg);
+ }
 }

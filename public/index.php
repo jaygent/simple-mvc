@@ -2,6 +2,7 @@
 session_start();
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
+include_once ('../vendor/autoload.php');
 spl_autoload_register(function ($name) {
         $path = dirname(__FILE__, 2) . '/' . str_replace('\\', '/', $name) . '.php';
         if (file_exists($path)) {

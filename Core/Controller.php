@@ -2,6 +2,7 @@
 namespace Core;
 use system\Auth;
 use system\Request;
+use Twig\Environment;
 
 class Controller{
     protected array $params;
