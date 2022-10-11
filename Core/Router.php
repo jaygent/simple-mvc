@@ -2,6 +2,7 @@
 namespace Core;
 
 use app\middleware\CrfsTokenMiddleware;
+use Exceptions\Excurl;
 use Router\Api;
 use Router\Web;
 use system\Request;
@@ -75,8 +76,7 @@ class Router{
             $middleware=array_merge($this->middleware,$middleware??[]);
             $param=$this->param[0];
             if(!$this->checkmiddleware($middleware)){
-                echo '403';
-                return;
+                throw new Excurl('403');
             }
             if(is_callable($param)){
                 call_user_func_array($param,$this->params);
@@ -92,7 +92,7 @@ class Router{
             }elseif(is_file("{$_SERVER['DOCUMENT_ROOT']}/$param")){
                 require_once ("{$_SERVER['DOCUMENT_ROOT']}/$param");
             }
-        }else{echo '404';}
+        }else{throw new Excurl('404');}
       }
 
     public function checkmiddleware($middlware):bool{

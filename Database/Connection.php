@@ -1,9 +1,8 @@
 <?php
-
 namespace Database;
 use PDO;
 use PDOStatement;
-
+require_once ('config.php');
 class Connection{
 	public static $instance;
 	protected PDO $db;
@@ -17,11 +16,11 @@ class Connection{
 	}
 
 	protected function __construct(){
-		$this->db = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS, [
-			PDO::ATTR_PERSISTENT => true,
-			PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-		]);
+            $this->db = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_DATABASE,DB_USERNAME, DB_PASSWORD, [
+                PDO::ATTR_PERSISTENT => true,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            ]);
 	}
 
 	public function select(string $query, array $params = []) : ?array{
