@@ -8,10 +8,9 @@ class CrfsTokenMiddleware implements Handler
 {
         public function handle(Request $request):bool
          {
-          if($request->body->crfs===$_SESSION['crfs']){
-          return true;
-          }else{
-              return false;
-          }
+             if($_SERVER['REQUEST_METHOD']=="POST" || $_SERVER['REQUEST_METHOD']==="PUT"){
+                 return $request->body->crfs===$_SESSION['crfs'] ? true : false;
+             }
+             return true;
         }
 }

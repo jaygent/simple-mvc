@@ -1,7 +1,5 @@
 <?php
-session_start();
-ini_set('display_errors', 'On');
-error_reporting(E_ALL);
+include_once ('../system/dev.php');
 include_once ('../vendor/autoload.php');
 spl_autoload_register(function ($name) {
         $path = dirname(__FILE__, 2) . '/' . str_replace('\\', '/', $name) . '.php';
@@ -9,11 +7,13 @@ spl_autoload_register(function ($name) {
             include_once($path);
         }
     });
-
-    (new \system\Crfs());
     use Router\Api;
     use Router\Web;
+    use system\Session;
+
 try{
+    Session::getInstance()->start();
+    \system\Crfs::start();
     function runurl()
     {
         $url = parse_url($_SERVER['REQUEST_URI']);

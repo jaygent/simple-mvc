@@ -1,5 +1,7 @@
 <?php
 namespace system;
+
+use app\Model\User;
 use system\Request;
 class Auth{
     protected $password;
@@ -16,18 +18,23 @@ class Auth{
     public static function is_user(){
            return $_SESSION['auth']?? false;
     }
-
-    public static function user(){
-
+/// должно быть создание модели на основе айди юзера
+    public static function user():array{
+            $user=new User();
+          return  $user->find($_SESSION['auth']);
     }
 
-    public function login(Request $request){
+    public function login(Request $request):bool{
+
+
+
         if($request->body->login===$this->login && md5($request->body->password)===$this->password){
-            $_SESSION['auth']=true;
-            echo 'ok';
+            $_SESSION['auth']=$this->id;
+           return true;
         }
+        return false;
     }
-    public function logout(){
+    public static function logout(){
        unset($_SESSION['auth']);
        echo 'logout';
     }

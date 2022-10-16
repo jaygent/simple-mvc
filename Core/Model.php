@@ -7,32 +7,20 @@ use Database\QuerySelect;
 use Database\SelectBuilder;
 
 
-abstract class Model{
-    protected static $instance;
+ class Model{
     protected Connection $db;
     protected string $table;
     protected string $pk;
-    protected array $validationRules;
 
-    public static function getInstance() : static{
-        if(static::$instance === null){
-            static::$instance = new static();
-        }
-
-        return static::$instance;
-    }
-
-    protected function __construct(){
+    public function __construct(){
         $this->db = Connection::getInstance();
-        $this->validator = new Validator();
-        $this->validator->addValidator('unique', new UniqueRule($this->db));
     }
 
     public function all() : array{
         return $this->selector()->get();
     }
 
-    public function get(int $id) : ?array{
+    public function find(int $id) : ?array{
         $res = $this->selector()->where("{$this->pk} = :pk", ['pk' => $id])->get();
         return $res[0] ?? null;
     }
@@ -91,24 +79,5 @@ abstract class Model{
         $query = "UPDATE {$this->table} SET $pairsStr WHERE {$this->pk} =:{$this->pk}";
         $this->db->query($query, $fields + [$this->pk => $id]);
         return true;
-    }
-
-    protected function rebuildRules(array $rules, ?int $pk = null){
-        $mask = 'unique';
-
-        foreach($rules as $field => $rule){
-            if(strpos($rule, $mask) !== false){
-                $updRule = str_replace($mask, "$mask:{$this->table},$field", $rule);
-
-                if($pk !== null){
-                    $updRule .= ",{$this->pk},$pk";
-                }
-
-                $rules[$field] = $updRule;
-            }
-        }
-        /* var_dump($rules);
-        exit(); */
-        return $rules;
     }
 }
