@@ -25,7 +25,6 @@ class Auth{
 
     public function login(Request $request):bool{
 
-        $user=User::login($request);
 
         if($request->body->login===$this->login && md5($request->body->password)===$this->password){
             $_SESSION['auth']=$this->id;
