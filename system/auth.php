@@ -18,7 +18,6 @@ class Auth{
     public static function is_user(){
            return $_SESSION['auth']?? false;
     }
-/// должно быть создание модели на основе айди юзера
     public static function user():array{
             $user=new User();
           return  $user->find($_SESSION['auth']);
@@ -26,7 +25,7 @@ class Auth{
 
     public function login(Request $request):bool{
 
-
+        $user=User::login($request);
 
         if($request->body->login===$this->login && md5($request->body->password)===$this->password){
             $_SESSION['auth']=$this->id;
