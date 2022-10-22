@@ -18,4 +18,5 @@ class View {
  public function render(string $templname,array $arg){
      echo $this->twig->render($templname,$arg);
  }
+
 }

@@ -12,6 +12,7 @@ spl_autoload_register(function ($name) {
     use system\Session;
 
 try{
+    // доделать момент сохранение сессий в дб или еще где
     Session::getInstance()->start();
     \system\Crfs::start();
     function runurl()

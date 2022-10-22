@@ -6,7 +6,7 @@ use system\Request;
 
 class User extends \Core\Model
 {
-    public string $table='users';
+    public string $table='user';
     protected string $pk='id';
 
 }

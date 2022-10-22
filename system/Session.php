@@ -5,7 +5,7 @@
  class Session
 {
     public static $instance;
-    public \SessionHandlerInterface $session;
+   public \SessionHandlerInterface $session;
     public function __construct()
     {
         session_set_save_handler(new SessionFile(), true);

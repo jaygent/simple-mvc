@@ -14,6 +14,8 @@ class Web implements iRoute {
        $route->get('/home',[\app\Controller\web\PostController::class,'home'],['auth']);
        $route->post('/login',[AuthController::class,'auth']);
        $route->get('/login',[AuthController::class,'index']);
+       $route->get('/reg',[AuthController::class,'reg']);
+       $route->post('/reg',[AuthController::class,'regpost']);
        $route->get('/logout',[AuthController::class,'logout']);
        $route->run();
    }

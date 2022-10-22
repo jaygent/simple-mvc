@@ -5,6 +5,7 @@ namespace app\Controller\web;
 use system\Auth;
 use system\Crfs;
 use system\Request;
+use Database\Connection as db;
 
 class AuthController extends \Core\Controller
 {
@@ -22,5 +23,18 @@ class AuthController extends \Core\Controller
        Auth::logout();
         header('Location: /');
     }
+    public function reg(){
+        $this->views->render('reg.twig',['crfs'=>Crfs::crfs()]);
+    }
+    public function regpost(Request $request){
 
+        $db=db::getInstance();
+        $params=[
+            'name'=>$request->body->name,
+            'password'=>md5($request->body->password),
+        ];
+        $db->query('INSERT INTO user (name,password)  VALUE (:name,:password)',$params);
+        $_SESSION['auth']=$db->lastInsertId();
+        header('Location: /home');
+    }
 }

@@ -2,11 +2,9 @@
 namespace system;
 
 use app\Model\User;
+use Database\Connection;
 use system\Request;
 class Auth{
-    protected $password;
-    public $login;
-    public $id=1;
 
     public function __construct()
     {
@@ -22,18 +20,17 @@ class Auth{
             $user=new User();
           return  $user->find($_SESSION['auth']);
     }
-
-    public function login(Request $request):bool{
-
-
-        if($request->body->login===$this->login && md5($request->body->password)===$this->password){
-            $_SESSION['auth']=$this->id;
+/// переделать на запрос через модель с использованием конструктора
+    public function login(Request $request){
+        $user=new User();
+        $resul=$user->selector()->where('name=:name',['name'=>$request->body->login])->get();
+        if($request->body->login===$resul[0]['name'] && md5($request->body->password)===$resul[0]['password']){
+            $_SESSION['auth']=$resul[0]['id'];
            return true;
         }
         return false;
     }
     public static function logout(){
        unset($_SESSION['auth']);
-       echo 'logout';
     }
 }
