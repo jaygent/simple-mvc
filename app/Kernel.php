@@ -13,9 +13,6 @@ class Kernel
         'web' => [
             \app\middleware\CrfsTokenMiddleware::class,
         ],
-
-        'api' => [
-        ],
     ];
 
 }

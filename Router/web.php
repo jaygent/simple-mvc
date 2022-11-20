@@ -7,10 +7,11 @@ use system\interface\iRoute;
 use Core\Router;
 
 class Web implements iRoute {
-   public static function paths():void
+   public  function paths():void
    {
        $route=new Router(Kernel::$middlewareGroups['web']);
        $route->get('/',[\app\Controller\web\PostController::class,'index']);
+       $route->get('/{slug:\w+}/{id:\d+}',[\app\Controller\web\PostController::class,'index']);
        $route->get('/home',[\app\Controller\web\PostController::class,'home'],['auth']);
        $route->post('/login',[AuthController::class,'auth']);
        $route->get('/login',[AuthController::class,'index']);

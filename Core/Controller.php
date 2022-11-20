@@ -5,14 +5,11 @@ use system\Request;
 use Twig\Environment;
 
 class Controller{
-    protected array $params;
-    protected Request $request;
+
     protected View $views;
 
-    public function __construct($params,$request)
+    public function __construct()
     {
-        $this->params=$params;
-        $this->request=$request;
         $this->views=new View();
     }
 }

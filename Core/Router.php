@@ -7,6 +7,8 @@ use Router\Api;
 use Router\Web;
 use system\Request;
 use app\Kernel;
+use DI\Container as Container;
+use DI;
 
 class Router{
     private array $rote;
@@ -85,8 +87,8 @@ class Router{
                 $action=$param[1];
                 if (class_exists($class)) {
                     if (method_exists($class, $action)) {
-                        $controller = new $class($params??[],$this->request);
-                        $controller->$action($this->request);
+                        $container=$GLOBALS["container"];
+                        $container->call([$class,$action],$this->params??[]);
                     }
                 }
             }elseif(is_file("{$_SERVER['DOCUMENT_ROOT']}/$param")){
@@ -96,8 +98,9 @@ class Router{
       }
 
     public function checkmiddleware($middlware):bool{
+        $container=$GLOBALS["container"];
         foreach($middlware as $m){
-                if(!(new $m)->handle($this->request)){
+                if(!$container->call([$m,'handle'])){
                     return false;
                 }
             }

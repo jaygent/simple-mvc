@@ -7,7 +7,6 @@ spl_autoload_register(function ($name) {
             include_once($path);
         }
     });
-    use Router\Api;
     use Router\Web;
     use system\Session;
 
@@ -15,18 +14,10 @@ try{
     // доделать момент сохранение сессий в дб или еще где
     Session::getInstance()->start();
     \system\Crfs::start();
-    function runurl()
-    {
-        $url = parse_url($_SERVER['REQUEST_URI']);
-        $path = explode('/', ltrim($url['path'], '/'));
-        if ($path[0] === 'api') {
-            Api::paths();
-        } else {
-            Web::paths();
-        }
-    }
+    $container = new DI\Container();
+    $rote=$container->get('Router\Web');
+    $rote->paths();
 
-    runurl();
 }
 catch(\Exceptions\Excurl $e){
     echo $e->getMessage();
